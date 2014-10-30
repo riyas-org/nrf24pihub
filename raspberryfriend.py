@@ -10,7 +10,7 @@ from time import gmtime, strftime
 pipes = [[0xf0, 0xf0, 0xf0, 0xf0, 0xe1], [0xf0, 0xf0, 0xf0, 0xf0, 0xd2]]
 
 radio = NRF24()
-radio.begin(0, 0,25,18) // set gpio 25 as CE pin
+radio.begin(0, 0,25,18) #set gpio 25 as CE pin
 radio.setRetries(15,15)
 radio.setPayloadSize(32)
 radio.setChannel(0x4c)
