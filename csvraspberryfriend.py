@@ -1,8 +1,10 @@
-#added csv write.. i havent tested yet
 #!/usr/bin/python
 # raspberry pi nrf24l01 hub
 # more details at http://blog.riyas.org
 # Credits to python port of nrf24l01, Joao Paulo Barrac & maniacbugs original c library
+# ======================= changes on may 1,2015=======================
+#added csv write.. i havent tested yet
+#result goes to a file called temp.csv in the same place as this file
 
 from nrf24 import NRF24
 import time
