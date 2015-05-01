@@ -38,7 +38,7 @@ while True:
     print out
     date = str(datetime.now())
     temp = out.rstrip('0123456789')
-    name = out[len(head):]
+    name = out[len(temp):]
     filep = open("temp.csv", "a")
     print >> filep, ";".join([date, name, temp])
     filep.close()
