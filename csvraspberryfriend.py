@@ -3,7 +3,7 @@
 # more details at http://blog.riyas.org
 # Credits to python port of nrf24l01, Joao Paulo Barrac & maniacbugs original c library
 # ======================= changes on may 1,2015=======================
-#added csv write.. i havent tested yet
+#added csv write..and parses multiple data elements (Temp, press, humidity)
 #result goes to a file called temp.csv in the same place as this file
 
 from nrf24 import NRF24
@@ -23,13 +23,17 @@ radio.setPALevel(NRF24.PA_MAX)
 radio.setAutoAck(1)
 radio.openWritingPipe(pipes[0])
 radio.openReadingPipe(1, pipes[1])
-
 radio.startListening()
 radio.stopListening()
 
 radio.printDetails()
 radio.startListening()
-
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
+def extract(raw_string, start_marker, end_marker):
+    start = raw_string.index(start_marker) + len(start_marker)
+    end = raw_string.index(end_marker, start)
+    return raw_string[start:end]
 while True:
     pipe = [0]
     while not radio.available(pipe, True):
@@ -37,11 +41,19 @@ while True:
     recv_buffer = []
     radio.read(recv_buffer)
     out = ''.join(chr(i) for i in recv_buffer)
-    print out
-    date = str(datetime.now())
-    temp = out.rstrip('0123456789')
-    name = out[len(temp):]
-    filep = open("temp.csv", "a")
-    print >> filep, ";".join([date, name, temp])
-    filep.close()
+    temper=extract(out,'T','T')
+    humid=extract(out,'H','H')
+    press=extract(out,'P','P')
+    #import pdb; pdb.set_trace()
+    #print out
+    print temper
+    print humid
+    print press
+    #write to csv if temper has a number
+    if  hasNumbers(temper):
+        print "writing csv"
+        date = str(datetime.now())
+        filep = open("temp.csv", "a")
+        print >> filep, ";".join([date,temper, humid, press])
+        filep.close()
     
